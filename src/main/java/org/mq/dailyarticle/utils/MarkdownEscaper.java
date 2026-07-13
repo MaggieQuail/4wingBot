@@ -1,4 +1,4 @@
-package org.vpmq.dailyword.utils;
+package org.mq.dailyarticle.utils;
 
 import java.util.AbstractMap;
 import java.util.Map;

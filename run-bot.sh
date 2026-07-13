@@ -12,4 +12,4 @@ if [[ -f "${ENV_FILE}" ]]; then
   set +a
 fi
 
-java -jar "${SCRIPT_DIR}/target/daily-word-bot.jar"
+java -jar "${SCRIPT_DIR}/target/daily-article-bot.jar"
