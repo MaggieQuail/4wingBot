@@ -36,7 +36,7 @@ public class DailyArticleBotService extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "SuperPuperDuperAIBot";
+        return "4WingBot";
     }
 
     @Override
