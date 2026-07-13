@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberLeft;
 import org.telegram.telegrambots.meta.api.objects.ChatMemberUpdated;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.mq.dailyarticle.models.VocabularyModel;
-import org.mq.dailyarticle.utils.MarkdownEscaper;
 
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -63,7 +62,7 @@ public class DailyArticleBotService extends TelegramLongPollingBot {
         SendMessage sm = SendMessage.builder()
             .chatId(Long.toString(userId))
             .parseMode("MarkdownV2")
-            .text(MarkdownEscaper.escape(text)).build();
+            .text(text).build();
         try {
             return execute(sm);
         } catch (TelegramApiException e) {
