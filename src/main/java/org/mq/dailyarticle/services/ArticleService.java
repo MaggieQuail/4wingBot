@@ -7,22 +7,14 @@ import java.sql.*;
 
 public class ArticleService {
 
-    private static final String GET_ARTICLE_BY_ID_QUERY =
+    private static final String GET_RANDOM_ARTICLE_QUERY =
         """
         SELECT
           id,
           article
         FROM articles
-        WHERE
-          id = ?
-        """;
-
-    private static final String GET_ARTICLE_COUNT_QUERY =
-        """
-        SELECT
-          COUNT(id) as article_count
-        FROM
-          articles
+        ORDER BY RANDOM()
+        LIMIT 1
         """;
 
     private final DataSource ds;
@@ -31,31 +23,15 @@ public class ArticleService {
         this.ds = ds;
     }
 
-    public VocabularyModel getById(int id) {
+    public VocabularyModel getRandom() {
         try (Connection conn = ds.getConnection();
-             PreparedStatement statement = conn.prepareStatement(GET_ARTICLE_BY_ID_QUERY)
-        ) {
-            statement.setLong(1, id);
-
-            try (ResultSet rs = statement.executeQuery()) {
-                if (!rs.next()) {
-                    throw new RuntimeException("article with id = " + id + " doesn't exist");
-                }
-                String article = rs.getString("article");
-                return new VocabularyModel(id, article);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    public int getArticleCount() {
-        try (Connection conn = ds.getConnection();
-             PreparedStatement statement = conn.prepareStatement(GET_ARTICLE_COUNT_QUERY);
+             PreparedStatement statement = conn.prepareStatement(GET_RANDOM_ARTICLE_QUERY);
              ResultSet rs = statement.executeQuery()
         ) {
-            return rs.getInt("article_count");
+            if (!rs.next()) {
+                throw new RuntimeException("no articles in database");
+            }
+            return new VocabularyModel(rs.getInt("id"), rs.getString("article"));
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

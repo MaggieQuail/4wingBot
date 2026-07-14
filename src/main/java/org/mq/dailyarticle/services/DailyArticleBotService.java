@@ -29,7 +29,7 @@ public class DailyArticleBotService extends TelegramLongPollingBot {
         super(botToken);
         this.subscriptions = subscriptions;
         this.articleGetter = articleGetter;
-        this.articleOfTheDay = articleGetter.getById(1);
+        this.articleOfTheDay = articleGetter.getRandom();
         this.updateArticleOfTheDayPeriodically(scheduler);
     }
 
@@ -76,13 +76,7 @@ public class DailyArticleBotService extends TelegramLongPollingBot {
             synchronized (articleLock) {
                 try {
                     List<Long> subscriberIds = subscriptions.getSubscriptions();
-
-                    int nextId = articleOfTheDay.id + 1;
-                    if (nextId > articleGetter.getArticleCount()) {
-                        nextId = 1;
-                    }
-                    articleOfTheDay = articleGetter.getById(nextId);
-
+                    articleOfTheDay = articleGetter.getRandom();
                     broadcastNewArticle(subscriberIds);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -98,7 +92,21 @@ public class DailyArticleBotService extends TelegramLongPollingBot {
 
     private String generateMessageText() {
         synchronized (articleLock) {
-            return "\uD83D\uDFE9 `" + articleOfTheDay.article + "`";
+            return "⚡⚡⚡\n`" + appendBookTitle(articleOfTheDay) + "`\n⚡⚡⚡";
         }
+    }
+
+    private String appendBookTitle(VocabularyModel article) {
+        String bookTitle;
+        if (article.id < 100) {
+            bookTitle = "Четвертое Крыло";
+        } else if (article.id < 200) {
+            bookTitle = "Железное Пламя";
+        } else if (article.id < 300) {
+            bookTitle = "Ониксовый Шторм";
+        } else {
+            return article.article;
+        }
+        return article.article + "\n\n\n\n" + bookTitle;
     }
 }
