@@ -82,7 +82,7 @@ public class DailyArticleBotService extends TelegramLongPollingBot {
                     ex.printStackTrace();
                 }
             }
-        }, 24, 24, TimeUnit.HOURS);
+        }, 0, 24, TimeUnit.HOURS);
     }
 
     private void broadcastNewArticle(List<Long> subscriberIds) {
@@ -98,11 +98,11 @@ public class DailyArticleBotService extends TelegramLongPollingBot {
 
     private String appendBookTitle(VocabularyModel article) {
         String bookTitle;
-        if (article.id < 100) {
+        if (article.id < 200) {
             bookTitle = "Четвертое Крыло";
-        } else if (article.id < 200) {
+        } else if (article.id < 400) {
             bookTitle = "Железное Пламя";
-        } else if (article.id < 300) {
+        } else if (article.id < 600) {
             bookTitle = "Ониксовый Шторм";
         } else {
             return article.article;
